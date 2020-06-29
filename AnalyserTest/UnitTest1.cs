@@ -18,5 +18,12 @@ namespace Tests
             String mood = moodAnalyser.AnalyseMood();
             Assert.AreEqual("sad", mood);
         }
+        [Test]
+        public void givenHappyMesaage_WhenAnalyse_ShouldReturnHappy()
+        {
+            MoodAnalyser moodAnalyser = new MoodAnalyser("I am in haapy mood");
+            String mood = moodAnalyser.AnalyseMood();
+            Assert.AreEqual("happy", mood);
+        }
     }
 }
