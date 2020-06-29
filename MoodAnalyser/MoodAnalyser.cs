@@ -4,26 +4,33 @@ using System.Text;
 
 namespace Mood_Analyser
 {
-  public  class MoodAnalyser
+    public class MoodAnalyser
     {
-       String message;
+        String message;
 
-     public MoodAnalyser()
+        public MoodAnalyser()
         {
 
         }
-       
-        
-    public MoodAnalyser(String message)
+
+
+        public MoodAnalyser(String message)
         {
-           this.message = message;
+            this.message = message;
         }
 
         public String AnalyseMood()
         {
-            if (message.Contains("sad"))
-                return "sad";
-            return "happy";
+            try
+            {
+                if (message.Contains("sad"))
+                    return "sad";
+                return "happy";
+            }
+            catch (Exception exception)
+            {
+                return "happy";
+            }
         }
     }
 }
