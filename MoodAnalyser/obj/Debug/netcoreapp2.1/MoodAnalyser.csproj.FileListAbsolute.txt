@@ -1,0 +1,10 @@
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\bin\Debug\netcoreapp2.1\MoodAnalyser.deps.json
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\bin\Debug\netcoreapp2.1\MoodAnalyser.runtimeconfig.json
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\bin\Debug\netcoreapp2.1\MoodAnalyser.runtimeconfig.dev.json
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\bin\Debug\netcoreapp2.1\MoodAnalyser.dll
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.csproj.CoreCompileInputs.cache
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.AssemblyInfoInputs.cache
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.AssemblyInfo.cs
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\bin\Debug\netcoreapp2.1\MoodAnalyser.pdb
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.dll
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.pdb
