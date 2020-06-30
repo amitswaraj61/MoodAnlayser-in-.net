@@ -31,7 +31,7 @@ namespace MoodAnalyser
         }
         public static bool IsValidClassName(String classname)
         {
-            if (classname.Equals("MoodAnalyzerMain"))
+            if (classname.Equals("MoodAnalyserMain"))
             {
                 return true;
             }

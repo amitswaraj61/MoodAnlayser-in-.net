@@ -74,5 +74,18 @@ namespace Tests
 
             }
         }
+        [Test]
+        public void givenWrongMethodName_WhenAnalyse_shouldReturnsMethodNotFoundException()
+        {
+            try
+            {
+                MoodAnalyserFactory.CreateMoodAnalyser("MoodAnalyserMain", "Analyser");
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual("Method not found", exception.message);
+
+            }
+        }
     }
 }
