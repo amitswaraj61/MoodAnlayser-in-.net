@@ -52,15 +52,27 @@ namespace Tests
             }
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("mood cant be empty",exception.message);
+                Assert.AreEqual("mood cant be empty", exception.message);
             }
         }
-       [Test]
+        [Test]
         public void givenMoodAnalyser_WhenProper_ShouldReturnObject()
         {
             MoodAnalyserMain moodAnalyzer = MoodAnalyserFactory.CreateMoodAnalyser();
             Assert.AreEqual(new MoodAnalyserMain(), moodAnalyzer);
         }
+        [Test]
+        public void givenWrongClassName_WhenAnalyse_shouldReturnsClassNotFoundException()
+        {
+            try
+            {
+                MoodAnalyserFactory.CreateMoodAnalyser("MoodAnalyser", "AnalyseMood");
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual("Class not found", exception.message);
 
+            }
+        }
     }
 }
