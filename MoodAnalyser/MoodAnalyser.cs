@@ -23,14 +23,22 @@ namespace Mood_Analyser
         {
             try
             {
-                if (message.Contains("sad"))
+                if (message.Length == 0)
+                    throw new MoodAnalyserException("mood cant be empty", MoodAnalyserException.ExceptionType.EMPTY_EXCEPTION);
+                else if (message.Contains("sad"))
                     return "sad";
-                return "happy";
+                else
+                    return "happy";
             }
-            catch (Exception exception)
+            catch (NullReferenceException)
             {
-                return "happy";
+                throw new MoodAnalyserException("mood cant be null", MoodAnalyserException.ExceptionType.NULL_EXCEPTION);
             }
         }
     }
-}
+    }
+                    
+    
+
+
+  

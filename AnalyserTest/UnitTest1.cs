@@ -2,6 +2,7 @@ using NUnit.Framework;
 using Mood_Analyser;
 using System;
 
+
 namespace Tests
 {
     public class Tests
@@ -29,8 +30,16 @@ namespace Tests
         public void givenMessage_IsNull_ReturnsHappy()
         {
             MoodAnalyser moodAnalyser = new MoodAnalyser(null);
-            String mood = moodAnalyser.AnalyseMood();
-            Assert.AreEqual("happy", mood);
+            String mood = null;
+            try
+            {
+                mood = moodAnalyser.AnalyseMood();
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual("mood cant be null", exception.message);
+
+            }
         }
     }
 }
