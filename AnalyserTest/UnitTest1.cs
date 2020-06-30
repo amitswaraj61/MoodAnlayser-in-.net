@@ -41,5 +41,18 @@ namespace Tests
 
             }
         }
+        [Test]
+        public void givenEmptyMessage_WhenAnalyse_shouldReturnsEmptyMoodException()
+        {
+            try
+            {
+                MoodAnalyser mood = new MoodAnalyser("");
+                mood.AnalyseMood();
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual("mood cant be empty",exception.message);
+            }
+        }
     }
 }
