@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mood_Analyser
+namespace MoodAnalyser
 {
-    public class MoodAnalyser
+   public class MoodAnalyserMain
     {
         String message;
 
-        public MoodAnalyser()
+        public MoodAnalyserMain()
         {
-
+            message = "";
         }
 
 
-        public MoodAnalyser(String message)
+        public MoodAnalyserMain(String message)
         {
             this.message = message;
         }
@@ -35,10 +35,15 @@ namespace Mood_Analyser
                 throw new MoodAnalyserException("mood cant be null", MoodAnalyserException.ExceptionType.NULL_EXCEPTION);
             }
         }
+        override
+        public bool Equals(Object obj)
+        {
+            MoodAnalyserMain moodAnalyser = (MoodAnalyserMain)obj;
+            if (this.message.Equals(moodAnalyser.message))
+            {
+                return true;
+            }
+            return false;
+        }
     }
-    }
-                    
-    
-
-
-  
+}

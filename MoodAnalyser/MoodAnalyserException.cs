@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Mood_Analyser;
+using MoodAnalyser;
 
-namespace Mood_Analyser
+namespace MoodAnalyser
 {
     public class MoodAnalyserException : Exception
     {
@@ -12,7 +12,7 @@ namespace Mood_Analyser
 
         public enum ExceptionType
         {
-            NULL_EXCEPTION, EMPTY_EXCEPTION
+            NULL_EXCEPTION, EMPTY_EXCEPTION,NO_SUCH_CLASS,NO_SUCH_METHOD
         }
 
     public MoodAnalyserException(String message,ExceptionType type) : base(message)

@@ -1,6 +1,7 @@
 using NUnit.Framework;
-using Mood_Analyser;
+using MoodAnalyser;
 using System;
+
 
 
 namespace Tests
@@ -15,21 +16,21 @@ namespace Tests
         [Test]
         public void givenSadMesaage_WhenAnalyse_ShouldReturnSad()
         {
-            MoodAnalyser moodAnalyser = new MoodAnalyser("I am in sad mood");
+            MoodAnalyserMain moodAnalyser = new MoodAnalyserMain("I am in sad mood");
             String mood = moodAnalyser.AnalyseMood();
             Assert.AreEqual("sad", mood);
         }
         [Test]
         public void givenHappyMesaage_WhenAnalyse_ShouldReturnHappy()
         {
-            MoodAnalyser moodAnalyser = new MoodAnalyser("I am in haapy mood");
+            MoodAnalyserMain moodAnalyser = new MoodAnalyserMain("I am in haapy mood");
             String mood = moodAnalyser.AnalyseMood();
             Assert.AreEqual("happy", mood);
         }
         [Test]
         public void givenMessage_IsNull_ReturnsHappy()
         {
-            MoodAnalyser moodAnalyser = new MoodAnalyser(null);
+            MoodAnalyserMain moodAnalyser = new MoodAnalyserMain(null);
             String mood = null;
             try
             {
@@ -46,7 +47,7 @@ namespace Tests
         {
             try
             {
-                MoodAnalyser mood = new MoodAnalyser("");
+                MoodAnalyserMain mood = new MoodAnalyserMain("");
                 mood.AnalyseMood();
             }
             catch (MoodAnalyserException exception)
@@ -54,5 +55,12 @@ namespace Tests
                 Assert.AreEqual("mood cant be empty",exception.message);
             }
         }
+       [Test]
+        public void givenMoodAnalyser_WhenProper_ShouldReturnObject()
+        {
+            MoodAnalyserMain moodAnalyzer = MoodAnalyserFactory.CreateMoodAnalyser();
+            Assert.AreEqual(new MoodAnalyserMain(), moodAnalyzer);
+        }
+
     }
 }
