@@ -1,8 +1,7 @@
 using NUnit.Framework;
 using MoodAnalyser;
 using System;
-
-
+using System.Reflection;
 
 namespace Tests
 {
@@ -14,21 +13,21 @@ namespace Tests
         }
 
         [Test]
-        public void givenSadMesaage_WhenAnalyse_ShouldReturnSad()
+        public void GivenSadMesaage_WhenAnalyse_ShouldReturnSad()
         {
             MoodAnalyserMain moodAnalyser = new MoodAnalyserMain("I am in sad mood");
             String mood = moodAnalyser.AnalyseMood();
             Assert.AreEqual("sad", mood);
         }
         [Test]
-        public void givenHappyMesaage_WhenAnalyse_ShouldReturnHappy()
+        public void GivenHappyMesaage_WhenAnalyse_ShouldReturnHappy()
         {
             MoodAnalyserMain moodAnalyser = new MoodAnalyserMain("I am in haapy mood");
             String mood = moodAnalyser.AnalyseMood();
             Assert.AreEqual("happy", mood);
         }
         [Test]
-        public void givenMessage_IsNull_ReturnsHappy()
+        public void GivenMessage_IsNull_ReturnsHappy()
         {
             MoodAnalyserMain moodAnalyser = new MoodAnalyserMain(null);
             String mood = null;
@@ -43,7 +42,7 @@ namespace Tests
             }
         }
         [Test]
-        public void givenEmptyMessage_WhenAnalyse_shouldReturnsEmptyMoodException()
+        public void GivenEmptyMessage_WhenAnalyse_ShouldReturnsEmptyMoodException()
         {
             try
             {
@@ -56,35 +55,43 @@ namespace Tests
             }
         }
         [Test]
-        public void givenMoodAnalyser_WhenProper_ShouldReturnObject()
+        public void GivenMoodAnalserObject_WhenAnalyse_ShouldReturnsMoodAnalyserObject()
         {
-            MoodAnalyserMain moodAnalyzer = MoodAnalyserFactory.CreateMoodAnalyser();
-            Assert.AreEqual(new MoodAnalyserMain(), moodAnalyzer);
+            MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+            ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
+            object obj_compare = moodAnalyserFactory.GetInstance("MoodAnalyserMain", constructorInfo);
+            Assert.IsInstanceOf(typeof(MoodAnalyserMain), obj_compare);
+
         }
         [Test]
-        public void givenWrongClassName_WhenAnalyse_shouldReturnsClassNotFoundException()
+        public void GivenWrongClassName_WhenAnalyse_ShouldReturnsClassNotFoundException()
         {
             try
             {
-                MoodAnalyserFactory.CreateMoodAnalyser("MoodAnalyser", "AnalyseMood");
+                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
+                object obj_compare = moodAnalyserFactory.GetInstance("MoodAnalyser", constructorInfo);
+
             }
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("Class not found", exception.message);
-
+                Assert.AreEqual("No such class", exception.Message);
             }
+
         }
         [Test]
-        public void givenWrongMethodName_WhenAnalyse_shouldReturnsMethodNotFoundException()
+        public void GivenWrongConstructorMethod_WhenAnalyse_ShouldReturnsMethodNotFoundException()
         {
             try
             {
-                MoodAnalyserFactory.CreateMoodAnalyser("MoodAnalyserMain", "Analyser");
+                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
+                ConstructorInfo wrong = null;
+                object obj_compare = moodAnalyserFactory.GetInstance("MoodAnalyserMain", wrong);
             }
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("Method not found", exception.message);
-
+                Assert.AreEqual("No such Method Found",exception.message);
             }
         }
     }

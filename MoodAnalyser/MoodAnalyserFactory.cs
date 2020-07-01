@@ -6,55 +6,57 @@ using MoodAnalyser;
 
 namespace MoodAnalyser
 {
-    public class MoodAnalyserFactory
+    public class MoodAnalyserFactory<GenType>
     {
-        public static MoodAnalyserMain CreateMoodAnalyser()
-        {
 
-            Type type = typeof(MoodAnalyserMain);
-            ConstructorInfo[] constructorInfo = type.GetConstructors();
-            Object obj = Activator.CreateInstance(type);
-            return (MoodAnalyserMain)obj;
-        }
-        public static void CreateMoodAnalyser(String classname, String method)
+        public ConstructorInfo GetDefaultConstructor()
         {
-            bool checkValidClass = IsValidClassName(classname);
-            bool checkValidMethod = IsValidMethodName(method);
-            if (!checkValidClass)
+            try
             {
-                throw new MoodAnalyserException("Class not found", MoodAnalyserException.ExceptionType.NO_SUCH_CLASS);
+                Type type = typeof(GenType);
+                ConstructorInfo[] constructor = type.GetConstructors();
+
+                // sending defalut constructor => parameters are 0
+                foreach (var info in constructor)
+                {
+                    if (info.GetParameters().Length == 0)
+                        return info;
+                }
+
+                return constructor[0];
             }
-            else if (checkValidMethod)
+            catch (Exception)
             {
-                throw new MoodAnalyserException("Method not found", MoodAnalyserException.ExceptionType.NO_SUCH_METHOD);
-            }
-        }
-        public static bool IsValidClassName(String classname)
-        {
-            if (classname.Equals("MoodAnalyserMain"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
+                throw new MoodAnalyserException("please enter valid class", MoodAnalyserException.ExceptionType.NO_SUCH_CLASS);
             }
         }
 
-        public static bool IsValidMethodName(String method)
+        public object GetInstance(string class_name, ConstructorInfo constructor)
         {
-            if (method.Equals(("AnalyseMood")))
+            try
             {
-                return true;
+                // create type using given type
+                Type type = typeof(GenType);
+                // given class not equals to type name throw exception
+                if (class_name != type.Name)
+                    throw new MoodAnalyserException("No such class", MoodAnalyserException.ExceptionType.NO_SUCH_CLASS);
+                // given constructor name is not equals to constructor of type throw exception
+                if (constructor != type.GetConstructors()[0])
+                    throw new MoodAnalyserException("No such Method Found", MoodAnalyserException.ExceptionType.NO_SUCH_METHOD);
+                //  var Object_return = constructor.Invoke(new object[0]);
+                GenType Obj_return = Activator.CreateInstance<GenType>();
+                return Obj_return;
             }
-            else
+            catch(MoodAnalyserException exception)
             {
-                return false;
+                return exception.message;
             }
-        }
 
+        }
     }
 }
+
+        
 
 
 
