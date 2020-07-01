@@ -103,6 +103,21 @@ namespace Tests
             MoodAnalyserMain mood = new MoodAnalyserMain("I am in sad mood");
             Assert.AreEqual(mood, obj_compare);
         }
+        [Test]
+        public void GivenWrongClassName_WhenAnalyse_ShouldReturnsClassNotFoundExceptionn_ParameterConstructor()
+        {
+            try
+            {
+                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
+                object obj_compare = moodAnalyserFactory.GetParameterizedInsatance("MoodAnalyser", constructorInfo, "I am in sad mood");
+
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual("No such class", exception.Message);
+            }
+        }
     }
 }
 
