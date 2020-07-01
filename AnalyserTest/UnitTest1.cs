@@ -85,14 +85,26 @@ namespace Tests
             try
             {
                 MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
-                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
+                //  ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
                 ConstructorInfo wrong = null;
                 object obj_compare = moodAnalyserFactory.GetInstance("MoodAnalyserMain", wrong);
             }
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("No such Method Found",exception.message);
+                Assert.AreEqual("No such Method Found", exception.message);
             }
+        }
+        [Test]
+        public void CompareObjects_UsingParameterizedConstructor_ReturnsObject()
+        {
+            MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+            ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
+            object obj_compare = moodAnalyserFactory.GetParameterizedInsatance("MoodAnalyserMain", constructorInfo, "I am in sad mood");
+            MoodAnalyserMain mood = new MoodAnalyserMain("I am in sad mood");
+            Assert.AreEqual(mood, obj_compare);
         }
     }
 }
+
+       
+   

@@ -9,7 +9,7 @@ namespace MoodAnalyser
     public class MoodAnalyserFactory<GenType>
     {
 
-        public ConstructorInfo GetDefaultConstructor()
+        public ConstructorInfo GetDefaultConstructor(int num_parameters = 0)
         {
             try
             {
@@ -19,7 +19,7 @@ namespace MoodAnalyser
                 // sending defalut constructor => parameters are 0
                 foreach (var info in constructor)
                 {
-                    if (info.GetParameters().Length == 0)
+                    if (info.GetParameters().Length == num_parameters)
                         return info;
                 }
 
@@ -47,14 +47,31 @@ namespace MoodAnalyser
                 GenType Obj_return = Activator.CreateInstance<GenType>();
                 return Obj_return;
             }
-            catch(MoodAnalyserException exception)
+            catch (MoodAnalyserException exception)
             {
                 return exception.message;
             }
+        }
+        public object GetParameterizedInsatance(string class_name, ConstructorInfo constructor, string parameterValue)
+        {
+            // create type using given type
+            Type type = typeof(GenType);
+            // given class not equals to type name throw exception
+            if (class_name != type.Name)
+                throw new MoodAnalyserException("No such class", MoodAnalyserException.ExceptionType.NO_SUCH_CLASS);
+            // given constructor name is not equals to constructor of type throw exception
+            if (constructor != type.GetConstructors()[1])
+                throw new MoodAnalyserException("No such Method Found", MoodAnalyserException.ExceptionType.NO_SUCH_METHOD);
+
+            Object Object_return = Activator.CreateInstance(type, parameterValue);
+            return Object_return;
 
         }
     }
 }
+    
+
+
 
         
 

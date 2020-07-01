@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MoodAnalyser
 {
-   public class MoodAnalyserMain
+   public  class MoodAnalyserMain
     {
         String message;
 
@@ -13,8 +13,7 @@ namespace MoodAnalyser
             message = "";
         }
 
-
-        public MoodAnalyserMain(String message)
+      public MoodAnalyserMain(String message)
         {
             this.message = message;
         }
