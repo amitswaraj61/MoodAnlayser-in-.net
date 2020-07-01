@@ -118,6 +118,21 @@ namespace Tests
                 Assert.AreEqual("No such class", exception.Message);
             }
         }
+        [Test]
+        public void GivenWrongConstructorMethod_WhenAnalyse_ShouldReturnsMethodNotFoundExceptio_ParameterConstructor()
+        {
+            try
+            {
+                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+                ConstructorInfo wrong = null; //Wrong Constructor 
+                object obj_compare = moodAnalyserFactory.GetParameterizedInsatance("MoodAnalyserMain", wrong, "I am in sad mood");
+
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual("No such Method Found", exception.Message);
+            }
+        }
     }
 }
 
