@@ -61,18 +61,19 @@ namespace MoodAnalyser
             return ObjReturn;
         }
 
-        public string InvokeMoodAnalyser()
+        public string InvokeMoodAnalyser(String mood, String method)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Type moodAnalyserType = Type.GetType("MoodAnalyser.MoodAnalyserMain");
-            MethodInfo methodInfo = moodAnalyserType.GetMethod("MoodAnalyserMain");
-            string stringArray = "I am in happy mood" ;
-            object objectInstance = Activator.CreateInstance(moodAnalyserType, stringArray);
-            string method = (String)methodInfo.Invoke(objectInstance, null);
-            return method;
+            Type moodAnalyserType =typeof(GenType);
+            MethodInfo methodInfo= moodAnalyserType.GetMethod(mood, new Type[] { typeof(string) });
+          //  string stringArray = "I am in happy mood" ;
+            object objectInstance = Activator.CreateInstance(moodAnalyserType,mood);
+            string methods = (String)methodInfo.Invoke(objectInstance,null);
+            return methods;
 
         }
     }
+   
+    
 }
 
 
@@ -83,7 +84,6 @@ namespace MoodAnalyser
 
 
 
-        
 
 
 
@@ -95,4 +95,4 @@ namespace MoodAnalyser
 
 
 
-    
+

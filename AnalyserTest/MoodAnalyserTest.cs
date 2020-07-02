@@ -12,6 +12,7 @@ namespace Tests
         public static String sadMood = "I am in sad mood";
         public static String happyMood = "I am in haapy mood";
         MoodAnalyserReflector<MoodAnalyserMain> moodAnalyserReflector = new MoodAnalyserReflector<MoodAnalyserMain>();
+        public static String methodName = "I am in haapy mood";
 
         [Test]
         public void GivenSadMesaage_WhenAnalyse_ShouldReturnSad()
@@ -104,7 +105,7 @@ namespace Tests
 
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_METHOD,exception.type);
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_METHOD, exception.type);
             }
         }
 
@@ -136,7 +137,7 @@ namespace Tests
 
         //use-case=5.3
         [Test]
-        public void GivenWrongConstructorMethod_WhenAnalyse_ShouldReturnsMethodNotFoundExceptio_ParameterConstructor()
+        public void GivenWrongConstructorMethod_WhenAnalyse_ShouldReturnsMethodNotFoundException_ParameterConstructor()
         {
             try
             {
@@ -157,7 +158,7 @@ namespace Tests
         {
             try
             {
-                string actual = moodAnalyserReflector.InvokeMoodAnalyser();
+                string actual = moodAnalyserReflector.InvokeMoodAnalyser(happyMood, methodName);
                 string expected = "happy";
                 Assert.AreEqual(actual, expected);
             }
@@ -166,11 +167,34 @@ namespace Tests
                 Console.WriteLine(exception.StackTrace);
             }
         }
+
+        //usecase-6.2
+        [Test]
+        public void givenReflectionMessage_WithReflection_ShouldReturnNoSuchMethod()
+        {
+            try
+            {
+                Object obj = moodAnalyserReflector.InvokeMoodAnalyser(happyMood, "analysisMood");
+                Assert.AreEqual(methodName, "analysisName");
+            }
+            catch (NullReferenceException exception)
+            {
+                Console.WriteLine(exception.StackTrace);
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_METHOD, exception.type);
+            }
+        }
     }
 }
 
 
-  
 
-   
-  
+
+
+
+
+
+
+
