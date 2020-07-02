@@ -6,7 +6,7 @@ using MoodAnalyser;
 
 namespace MoodAnalyser
 {
-    public class MoodAnalyserFactory<GenType>
+    public class MoodAnalyserReflector<GenType>
     {
 
         public ConstructorInfo GetDefaultConstructor(int numParameters = 0)
@@ -59,6 +59,18 @@ namespace MoodAnalyser
                 throw new MoodAnalyserException("No_such_Method", MoodAnalyserException.ExceptionType.NO_SUCH_METHOD);
             Object ObjReturn = Activator.CreateInstance(type, parameterValue);
             return ObjReturn;
+        }
+
+        public string InvokeMoodAnalyser()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Type moodAnalyserType = Type.GetType("MoodAnalyser.MoodAnalyserMain");
+            MethodInfo methodInfo = moodAnalyserType.GetMethod("MoodAnalyserMain");
+            string stringArray = "I am in happy mood" ;
+            object objectInstance = Activator.CreateInstance(moodAnalyserType, stringArray);
+            string method = (String)methodInfo.Invoke(objectInstance, null);
+            return method;
+
         }
     }
 }

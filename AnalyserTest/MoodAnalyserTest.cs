@@ -11,7 +11,7 @@ namespace Tests
         public static String wrongClassName = "MoodAnalyser";
         public static String sadMood = "I am in sad mood";
         public static String happyMood = "I am in haapy mood";
-        MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+        MoodAnalyserReflector<MoodAnalyserMain> moodAnalyserReflector = new MoodAnalyserReflector<MoodAnalyserMain>();
 
         [Test]
         public void GivenSadMesaage_WhenAnalyse_ShouldReturnSad()
@@ -65,8 +65,8 @@ namespace Tests
         [Test]
         public void GivenMoodAnalserObject_WhenAnalyse_ShouldReturnsMoodAnalyserObject()
         {
-            ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
-            object objCompare = moodAnalyserFactory.GetInstance(className, constructorInfo);
+            ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor();
+            object objCompare = moodAnalyserReflector.GetInstance(className, constructorInfo);
             Assert.IsInstanceOf(typeof(MoodAnalyserMain), objCompare);
 
         }
@@ -77,8 +77,8 @@ namespace Tests
         {
             try
             {
-                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
-                object objCompare = moodAnalyserFactory.GetInstance(wrongClassName, constructorInfo);
+                ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor();
+                object objCompare = moodAnalyserReflector.GetInstance(wrongClassName, constructorInfo);
                 Assert.AreEqual(className, wrongClassName);
             }
 
@@ -95,9 +95,9 @@ namespace Tests
         {
             try
             {
-                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
+                ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor();
                 ConstructorInfo wrong = null;
-                object objCompare = moodAnalyserFactory.GetInstance(className, wrong);
+                object objCompare = moodAnalyserReflector.GetInstance(className, wrong);
                 Assert.AreEqual(constructorInfo, wrong);
 
             }
@@ -112,8 +112,8 @@ namespace Tests
         [Test]
         public void CompareObjects_UsingParameterizedConstructor_ReturnsObject()
         {
-            ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
-            object objCompare = moodAnalyserFactory.GetParameterizedInsatance(className, constructorInfo, sadMood);
+            ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor(1);
+            object objCompare = moodAnalyserReflector.GetParameterizedInsatance(className, constructorInfo, sadMood);
             MoodAnalyserMain mood = new MoodAnalyserMain(sadMood);
             Assert.AreEqual(mood, objCompare);
         }
@@ -123,8 +123,8 @@ namespace Tests
         {
             try
             {
-                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
-                object objCompare = moodAnalyserFactory.GetParameterizedInsatance(wrongClassName, constructorInfo, sadMood);
+                ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor(1);
+                object objCompare = moodAnalyserReflector.GetParameterizedInsatance(wrongClassName, constructorInfo, sadMood);
                 Assert.AreEqual(className, wrongClassName);
 
             }
@@ -140,15 +140,30 @@ namespace Tests
         {
             try
             {
-                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
+                ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor(1);
                 ConstructorInfo wrong = null; //Wrong Constructor 
-                object objCompare = moodAnalyserFactory.GetParameterizedInsatance(className, wrong, sadMood);
+                object objCompare = moodAnalyserReflector.GetParameterizedInsatance(className, wrong, sadMood);
                 Assert.AreEqual(constructorInfo, wrong);
             }
 
             catch (MoodAnalyserException exception)
             {
                 Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_METHOD, exception.type);
+            }
+        }
+        //usecase-6.1
+        [Test]
+        public void GivenMoodAnalserMethod_WhenAnalyse_ShouldReturnsHappy()
+        {
+            try
+            {
+                string actual = moodAnalyserReflector.InvokeMoodAnalyser();
+                string expected = "happy";
+                Assert.AreEqual(actual, expected);
+            }
+            catch (NullReferenceException exception)
+            {
+                Console.WriteLine(exception.StackTrace);
             }
         }
     }
