@@ -12,7 +12,7 @@ namespace MoodAnalyser
 
         public enum ExceptionType
         {
-            NULL_EXCEPTION, EMPTY_EXCEPTION,NO_SUCH_CLASS,NO_SUCH_METHOD,OBJECT_CREATION_ERROR
+            NULL_EXCEPTION, EMPTY_EXCEPTION,NO_SUCH_CLASS,NO_SUCH_METHOD,OBJECT_CREATION_ERROR, No_such_Method, No_such_class, mood_cant_be_empty, mood_cant_be_null
         }
 
     public MoodAnalyserException(String message,ExceptionType type) : base(message)

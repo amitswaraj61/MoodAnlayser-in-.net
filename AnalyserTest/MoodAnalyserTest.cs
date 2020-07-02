@@ -5,27 +5,30 @@ using System.Reflection;
 
 namespace Tests
 {
-    public class Tests
+    public class MoodAnalyserTest
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
+        public static String className = "MoodAnalyserMain";
+        public static String wrongClassName = "MoodAnalyser";
+        public static String sadMood = "I am in sad mood";
+        public static String happyMood = "I am in haapy mood";
+        MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
 
         [Test]
         public void GivenSadMesaage_WhenAnalyse_ShouldReturnSad()
         {
-            MoodAnalyserMain moodAnalyser = new MoodAnalyserMain("I am in sad mood");
+            MoodAnalyserMain moodAnalyser = new MoodAnalyserMain(sadMood);
             String mood = moodAnalyser.AnalyseMood();
             Assert.AreEqual("sad", mood);
         }
+
         [Test]
         public void GivenHappyMesaage_WhenAnalyse_ShouldReturnHappy()
         {
-            MoodAnalyserMain moodAnalyser = new MoodAnalyserMain("I am in haapy mood");
+            MoodAnalyserMain moodAnalyser = new MoodAnalyserMain(happyMood);
             String mood = moodAnalyser.AnalyseMood();
             Assert.AreEqual("happy", mood);
         }
+
         [Test]
         public void GivenMessage_IsNull_ReturnsHappy()
         {
@@ -34,13 +37,15 @@ namespace Tests
             try
             {
                 mood = moodAnalyser.AnalyseMood();
+                Assert.AreEqual(sadMood, null);
             }
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("mood cant be null", exception.message);
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NULL_EXCEPTION, exception.type);
 
             }
         }
+
         [Test]
         public void GivenEmptyMessage_WhenAnalyse_ShouldReturnsEmptyMoodException()
         {
@@ -48,93 +53,109 @@ namespace Tests
             {
                 MoodAnalyserMain mood = new MoodAnalyserMain("");
                 mood.AnalyseMood();
+                Assert.AreEqual("mood not be empty", mood);
             }
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("mood cant be empty", exception.message);
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.EMPTY_EXCEPTION, exception.type);
             }
         }
+
+        //use-case=4.1
         [Test]
         public void GivenMoodAnalserObject_WhenAnalyse_ShouldReturnsMoodAnalyserObject()
         {
-            MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
             ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
-            object obj_compare = moodAnalyserFactory.GetInstance("MoodAnalyserMain", constructorInfo);
-            Assert.IsInstanceOf(typeof(MoodAnalyserMain), obj_compare);
+            object objCompare = moodAnalyserFactory.GetInstance(className, constructorInfo);
+            Assert.IsInstanceOf(typeof(MoodAnalyserMain), objCompare);
 
         }
+
+        //use-case=4.2
         [Test]
         public void GivenWrongClassName_WhenAnalyse_ShouldReturnsClassNotFoundException()
         {
             try
             {
-                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
                 ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
-                object obj_compare = moodAnalyserFactory.GetInstance("MoodAnalyser", constructorInfo);
-
+                object objCompare = moodAnalyserFactory.GetInstance(wrongClassName, constructorInfo);
+                Assert.AreEqual(className, wrongClassName);
             }
+
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("No such class", exception.Message);
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_CLASS, exception.type);
             }
 
         }
+
+        //use-case=4.3
         [Test]
         public void GivenWrongConstructorMethod_WhenAnalyse_ShouldReturnsMethodNotFoundException()
         {
             try
             {
-                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
-                //  ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
+                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor();
                 ConstructorInfo wrong = null;
-                object obj_compare = moodAnalyserFactory.GetInstance("MoodAnalyserMain", wrong);
+                object objCompare = moodAnalyserFactory.GetInstance(className, wrong);
+                Assert.AreEqual(constructorInfo, wrong);
+
             }
+
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("No such Method Found", exception.message);
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_METHOD,exception.type);
             }
         }
+
+        //use-case=5
         [Test]
         public void CompareObjects_UsingParameterizedConstructor_ReturnsObject()
         {
-            MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
             ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
-            object obj_compare = moodAnalyserFactory.GetParameterizedInsatance("MoodAnalyserMain", constructorInfo, "I am in sad mood");
-            MoodAnalyserMain mood = new MoodAnalyserMain("I am in sad mood");
-            Assert.AreEqual(mood, obj_compare);
+            object objCompare = moodAnalyserFactory.GetParameterizedInsatance(className, constructorInfo, sadMood);
+            MoodAnalyserMain mood = new MoodAnalyserMain(sadMood);
+            Assert.AreEqual(mood, objCompare);
         }
-        [Test]
+
+        [Test] //usecase=5.2
         public void GivenWrongClassName_WhenAnalyse_ShouldReturnsClassNotFoundExceptionn_ParameterConstructor()
         {
             try
             {
-                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
                 ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
-                object obj_compare = moodAnalyserFactory.GetParameterizedInsatance("MoodAnalyser", constructorInfo, "I am in sad mood");
+                object objCompare = moodAnalyserFactory.GetParameterizedInsatance(wrongClassName, constructorInfo, sadMood);
+                Assert.AreEqual(className, wrongClassName);
 
             }
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("No such class", exception.Message);
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_CLASS, exception.type);
             }
         }
+
+        //use-case=5.3
         [Test]
         public void GivenWrongConstructorMethod_WhenAnalyse_ShouldReturnsMethodNotFoundExceptio_ParameterConstructor()
         {
             try
             {
-                MoodAnalyserFactory<MoodAnalyserMain> moodAnalyserFactory = new MoodAnalyserFactory<MoodAnalyserMain>();
+                ConstructorInfo constructorInfo = moodAnalyserFactory.GetDefaultConstructor(1);
                 ConstructorInfo wrong = null; //Wrong Constructor 
-                object obj_compare = moodAnalyserFactory.GetParameterizedInsatance("MoodAnalyserMain", wrong, "I am in sad mood");
-
+                object objCompare = moodAnalyserFactory.GetParameterizedInsatance(className, wrong, sadMood);
+                Assert.AreEqual(constructorInfo, wrong);
             }
+
             catch (MoodAnalyserException exception)
             {
-                Assert.AreEqual("No such Method Found", exception.Message);
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_METHOD, exception.type);
             }
         }
     }
 }
 
-       
+
+  
+
    
+  

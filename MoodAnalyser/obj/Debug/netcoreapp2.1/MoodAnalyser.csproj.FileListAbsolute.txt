@@ -8,3 +8,4 @@ C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\Mood
 C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.AssemblyInfo.cs
 C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.dll
 C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.pdb
+C:\Users\Kis\source\repos\MoodAnalyser\MoodAnalyser\obj\Debug\netcoreapp2.1\MoodAnalyser.csprojAssemblyReference.cache
