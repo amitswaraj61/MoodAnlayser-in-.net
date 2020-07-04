@@ -1,24 +1,34 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------
+// <copyright file="MoodAnalyzerMain.cs" company="BridgeLabz">
+// Copyright (c) 2012 All Rights Reserved
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MoodAnalyser
 {
-   public class MoodAnalyserMain
+    public class MoodAnalyserMain
     {
-        String message;
+      public  String message;
 
         public MoodAnalyserMain()
         {
             message = "";
         }
 
-      public MoodAnalyserMain(String message)
+        public MoodAnalyserMain(String message)
         {
             this.message = message;
         }
-
         public String AnalyseMood()
+        {
+            return AnalyseMood(this.message);
+        }
+
+      
+            public String AnalyseMood(String message)
         {
             try
             {

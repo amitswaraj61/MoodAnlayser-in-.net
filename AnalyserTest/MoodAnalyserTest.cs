@@ -12,7 +12,9 @@ namespace Tests
         public static String sadMood = "I am in sad mood";
         public static String happyMood = "I am in haapy mood";
         MoodAnalyserReflector<MoodAnalyserMain> moodAnalyserReflector = new MoodAnalyserReflector<MoodAnalyserMain>();
-        public static String methodName = "I am in haapy mood";
+        public static String methodName = "AnalyseMood";
+        public static string fieldName = "message";
+        public static string Happy = "happy";
 
         [Test]
         public void GivenSadMesaage_WhenAnalyse_ShouldReturnSad()
@@ -27,7 +29,7 @@ namespace Tests
         {
             MoodAnalyserMain moodAnalyser = new MoodAnalyserMain(happyMood);
             String mood = moodAnalyser.AnalyseMood();
-            Assert.AreEqual("happy", mood);
+            Assert.AreEqual(Happy, mood);
         }
 
         [Test]
@@ -80,7 +82,7 @@ namespace Tests
             {
                 ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor();
                 object objCompare = moodAnalyserReflector.GetInstance(wrongClassName, constructorInfo);
-                Assert.AreEqual(className, wrongClassName);
+                Assert.AreEqual(className, objCompare);
             }
 
             catch (MoodAnalyserException exception)
@@ -99,7 +101,7 @@ namespace Tests
                 ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor();
                 ConstructorInfo wrong = null;
                 object objCompare = moodAnalyserReflector.GetInstance(className, wrong);
-                Assert.AreEqual(constructorInfo, wrong);
+                Assert.AreEqual(constructorInfo, objCompare);
 
             }
 
@@ -126,7 +128,7 @@ namespace Tests
             {
                 ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor(1);
                 object objCompare = moodAnalyserReflector.GetParameterizedInsatance(wrongClassName, constructorInfo, sadMood);
-                Assert.AreEqual(className, wrongClassName);
+                Assert.AreEqual(className, objCompare);
 
             }
             catch (MoodAnalyserException exception)
@@ -144,7 +146,7 @@ namespace Tests
                 ConstructorInfo constructorInfo = moodAnalyserReflector.GetDefaultConstructor(1);
                 ConstructorInfo wrong = null; //Wrong Constructor 
                 object objCompare = moodAnalyserReflector.GetParameterizedInsatance(className, wrong, sadMood);
-                Assert.AreEqual(constructorInfo, wrong);
+                Assert.AreEqual(constructorInfo, objCompare);
             }
 
             catch (MoodAnalyserException exception)
@@ -158,8 +160,8 @@ namespace Tests
         {
             try
             {
-                string actual = moodAnalyserReflector.InvokeMoodAnalyser(happyMood, methodName);
-                string expected = "happy";
+                string actual = moodAnalyserReflector.InvokeMoodAnalyser(happyMood, methodName, fieldName);
+                string expected = Happy;
                 Assert.AreEqual(actual, expected);
             }
             catch (NullReferenceException exception)
@@ -170,31 +172,57 @@ namespace Tests
 
         //usecase-6.2
         [Test]
-        public void givenReflectionMessage_WithReflection_ShouldReturnNoSuchMethod()
+        public void GivenWrongMethodName_WhenAnalyse_shouldReturnsNoSuchMethodException()
         {
             try
             {
-                Object obj = moodAnalyserReflector.InvokeMoodAnalyser(happyMood, "analysisMood");
-                Assert.AreEqual(methodName, "analysisName");
-            }
-            catch (NullReferenceException exception)
-            {
-                Console.WriteLine(exception.StackTrace);
+                Object obj = moodAnalyserReflector.InvokeMoodAnalyser(happyMood, "wrong", fieldName);
+                Assert.AreEqual(methodName, obj);
             }
             catch (MoodAnalyserException exception)
             {
                 Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_METHOD, exception.type);
             }
         }
+        /// <summary>
+        /// Test Case 7.1:Happy message in reflection  with correct field returns happy
+        /// </summary>
+        [Test]
+        public void GivenFieldValueHappy_WhenAnalyse_ShouldReturnsHappyMood()
+        {
+            string actual = this.moodAnalyserReflector.InvokeMoodAnalyser(happyMood, methodName, fieldName);
+            Assert.AreEqual(Happy, actual);
+        }
+
+        /// <summary>
+        /// Test Case 7.2:Incorrect field returns exception
+        /// </summary>
+        [Test]
+        public void GivenWrongField_WhenAnalyse_ShouldReturnNoSuchFieldException()
+        {
+            try
+            {
+                string actual = this.moodAnalyserReflector.InvokeMoodAnalyser(methodName, happyMood, "wrongfield");
+                Assert.AreEqual(Happy, actual);
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_FIELD, exception.type);
+            }
+        }
+        [Test]
+        public void GivenNullMessage_WhenAnalyse_ShouldReturnsNullException()
+        {
+            try
+            {
+                string actualValue = this.moodAnalyserReflector.InvokeMoodAnalyser(happyMood, methodName, null);
+                Assert.AreEqual(Happy, actualValue);
+            }
+            catch (MoodAnalyserException exception)
+            {
+                Assert.AreEqual(MoodAnalyserException.ExceptionType.NO_SUCH_FIELD, exception.type);
+
+            }
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-

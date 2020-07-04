@@ -1,4 +1,9 @@
-﻿using System;
+﻿//-----------------------------------------------------------------------
+// <copyright file="MoodAnalyzerFactory.cs" company="BridgeLabz">
+// Copyright (c) 2012 All Rights Reserved
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -8,12 +13,14 @@ namespace MoodAnalyser
 {
     public class MoodAnalyserReflector<GenType>
     {
+        Type type = typeof(GenType);
 
         public ConstructorInfo GetDefaultConstructor(int numParameters = 0)
+
         {
             try
             {
-                Type type = typeof(GenType);
+                
                 ConstructorInfo[] constructor = type.GetConstructors();
 
                 // sending defalut constructor => parameters are 0
@@ -63,36 +70,49 @@ namespace MoodAnalyser
 
         public string InvokeMoodAnalyser(String mood, String method)
         {
-            Type moodAnalyserType =typeof(GenType);
-            MethodInfo methodInfo= moodAnalyserType.GetMethod(mood, new Type[] { typeof(string) });
-          //  string stringArray = "I am in happy mood" ;
-            object objectInstance = Activator.CreateInstance(moodAnalyserType,mood);
-            string methods = (String)methodInfo.Invoke(objectInstance,null);
+            Type moodAnalyserType = typeof(GenType);
+            MethodInfo methodInfo = moodAnalyserType.GetMethod(mood, new Type[] { typeof(string) });
+            //  string stringArray = "I am in happy mood" ;
+            object objectInstance = Activator.CreateInstance(moodAnalyserType, mood);
+            string methods = (String)methodInfo.Invoke(objectInstance, null);
             return methods;
+        }
 
+
+
+        public string InvokeMoodAnalyser(string mood,string methodName,string fieldName)
+        {
+           
+
+            try
+            {
+                if (fieldName == null)
+                    throw new MoodAnalyserException("No such field", MoodAnalyserException.ExceptionType.NO_SUCH_FIELD);
+                FieldInfo fields = type.GetField(fieldName);
+                string value = fields.ToString();
+                if (value.Contains("String message"))
+                {
+                    try
+                    {
+                        MethodInfo info = this.type.GetMethod(methodName, new Type[] { typeof(string) });
+                        object instance = Activator.CreateInstance(this.type);
+                        string returnValue= (string)info.Invoke(instance, new string[] { mood });
+                        return returnValue;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        throw new MoodAnalyserException("No such method", MoodAnalyserException.ExceptionType.NO_SUCH_METHOD);
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                throw new MoodAnalyserException("No such field", MoodAnalyserException.ExceptionType.NO_SUCH_FIELD);
+            }
+
+            return null;
         }
     }
-   
-    
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
